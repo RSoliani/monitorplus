@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const elNivelCarga = document.getElementById('data-nivel-carga');
     const elSaudeBateria = document.getElementById('data-saude-bateria');
     const elTemperatura = document.getElementById('data-temperatura');
-    const elVoltagem = document.getElementById('data-voltagem');
+    const elTensao = document.getElementById('data-tensao');
     const elCorrente = document.getElementById('data-corrente');
     const elPotencia = document.getElementById('data-potencia');
     const btnRefreshData = document.getElementById('btn-refresh-data');
@@ -28,11 +28,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Dados e Estado da Aplicação ---
     let dadosBateriaAtual = { 
-        nivelCarga: 88, saudeBateria: 95, temperatura: 25, voltagem: 48.8, corrente: 3.5, potencia: 0,
+        nivelCarga: 88, saudeBateria: 95, temperatura: 25, tensao: 48.8, corrente: 3.5, potencia: 0,
         historicoCargaDashboard: [80, 82, 81, 83, 85, 84, 86, 88, 87, 89, 90, 88],
         historicoGeracaoDashboard: [100, 150, 200, 250, 300, 280, 260, 240, 200, 180, 150, 120]
     };
-    dadosBateriaAtual.potencia = parseFloat((dadosBateriaAtual.voltagem * dadosBateriaAtual.corrente).toFixed(2));
+    dadosBateriaAtual.potencia = parseFloat((dadosBateriaAtual.tensao * dadosBateriaAtual.corrente).toFixed(2));
 
     let amostraDadosHistoricosCompletos = [];
     let dadosHistoricosFiltradosGlobal = []; 
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     dados.push({
                         dataHora: dataHoraRegistro.toISOString().slice(0, 16).replace('T', ' '),
                         nivelCarga: Math.round(nivelCargaSim),
-                        voltagem: parseFloat((45 + (nivelCargaSim / 100) * 7).toFixed(1)),
+                        tensao: parseFloat((45 + (nivelCargaSim / 100) * 7).toFixed(1)),
                         corrente: correnteSim,
                         temperatura: Math.round(22 + Math.random() * 8 + (Math.abs(correnteSim) / 6)),
                         fonte: fonteSimulada,
@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (elNivelCarga) elNivelCarga.textContent = `${dadosBateriaAtual.nivelCarga}%`;
         if (elSaudeBateria) elSaudeBateria.textContent = `${dadosBateriaAtual.saudeBateria}%`;
         if (elTemperatura) elTemperatura.textContent = `${dadosBateriaAtual.temperatura}°C`;
-        if (elVoltagem) elVoltagem.textContent = `${dadosBateriaAtual.voltagem.toFixed(1)} V`;
+        if (elTensao) elTensao.textContent = `${dadosBateriaAtual.tensao.toFixed(1)} V`;
         if (elCorrente) elCorrente.textContent = `${dadosBateriaAtual.corrente.toFixed(1)} A`;
         if (elPotencia) elPotencia.textContent = `${dadosBateriaAtual.potencia.toFixed(2)} W`;
     }
@@ -86,9 +86,9 @@ document.addEventListener('DOMContentLoaded', () => {
         dadosBateriaAtual.nivelCarga = Math.floor(Math.random() * 65) + 35;
         dadosBateriaAtual.saudeBateria = Math.max(65, dadosBateriaAtual.saudeBateria - Math.round(Math.random()));
         dadosBateriaAtual.temperatura = Math.floor(Math.random() * 18) + 18;
-        dadosBateriaAtual.voltagem = parseFloat((47.5 + Math.random() * 3).toFixed(1));
+        dadosBateriaAtual.tensao = parseFloat((47.5 + Math.random() * 3).toFixed(1));
         dadosBateriaAtual.corrente = parseFloat(((Math.random() * 20) - 8).toFixed(1));
-        dadosBateriaAtual.potencia = parseFloat((dadosBateriaAtual.voltagem * dadosBateriaAtual.corrente).toFixed(2));
+        dadosBateriaAtual.potencia = parseFloat((dadosBateriaAtual.tensao * dadosBateriaAtual.corrente).toFixed(2));
         dadosBateriaAtual.historicoCargaDashboard.shift(); dadosBateriaAtual.historicoCargaDashboard.push(dadosBateriaAtual.nivelCarga);
         dadosBateriaAtual.historicoGeracaoDashboard.shift(); dadosBateriaAtual.historicoGeracaoDashboard.push(Math.max(0,Math.floor(dadosBateriaAtual.potencia > 0 ? dadosBateriaAtual.potencia : Math.random() * 80)));
         exibirDadosDashboard();
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const MAX_ROWS = 100; const dadosView = dadosParaExibir.slice(0, MAX_ROWS);
         dadosView.forEach(item => {
             const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${item.dataHora}</td><td>${item.nivelCarga}</td><td>${item.voltagem.toFixed(1)}</td><td>${item.corrente.toFixed(1)}</td><td>${item.temperatura.toFixed(0)}</td><td><span class="badge rounded-pill text-bg-${item.fonte === 'Solar' ? 'warning' : (item.fonte === 'Eólica' ? 'info' : (item.fonte === 'Rede' ? 'primary' : (item.fonte === 'Descarga' ? 'danger' : 'secondary')))}">${item.fonte}</span></td><td>${item.eventos}</td>`;
+            tr.innerHTML = `<td>${item.dataHora}</td><td>${item.nivelCarga}</td><td>${item.tensao.toFixed(1)}</td><td>${item.corrente.toFixed(1)}</td><td>${item.temperatura.toFixed(0)}</td><td><span class="badge rounded-pill text-bg-${item.fonte === 'Solar' ? 'warning' : (item.fonte === 'Eólica' ? 'info' : (item.fonte === 'Rede' ? 'primary' : (item.fonte === 'Descarga' ? 'danger' : 'secondary')))}">${item.fonte}</span></td><td>${item.eventos}</td>`;
             tabelaHistoricoCorpoEl.appendChild(tr);
         });
         if (dadosParaExibir.length > MAX_ROWS) {
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
             alert("Nenhum dado filtrado para exportar."); return; 
         }
         try {
-            const dados = dadosHistoricosFiltradosGlobal.map(i=>({'Data/Hora':i.dataHora,'Carga(%)':i.nivelCarga,'Voltagem(V)':i.voltagem,'Corrente(A)':i.corrente,'Temp(°C)':i.temperatura,'Fonte':i.fonte,'Eventos':i.eventos}));
+            const dados = dadosHistoricosFiltradosGlobal.map(i=>({'Data/Hora':i.dataHora,'Carga(%)':i.nivelCarga,'Tensao(V)':i.tensao,'Corrente(A)':i.corrente,'Temp(°C)':i.temperatura,'Fonte':i.fonte,'Eventos':i.eventos}));
             const ws = XLSX.utils.json_to_sheet(dados);
             const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, ws, "Histórico");
             ws["!cols"] = [{wch:18},{wch:10},{wch:10},{wch:10},{wch:10},{wch:12},{wch:30}];
