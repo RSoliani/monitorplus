@@ -58,13 +58,12 @@ Uma plataforma web front-end interativa para simular o monitoramento de sistemas
 
 1.  **Clone o repositório (se estiver no GitHub):**
     ```bash
-    git clone [https://github.com/SEU_USUARIO/NOME_DO_SEU_REPOSITORIO.git](https://github.com/SEU_USUARIO/NOME_DO_SEU_REPOSITORIO.git)
+    git clone [https://github.com/RSoliani/monitorplus.git](https://github.com/RSoliani/monitorplus.git)
     ```
-    (Substitua `SEU_USUARIO/NOME_DO_SEU_REPOSITORIO` pelo link real do seu projeto)
 
 2.  **Navegue até a pasta do projeto:**
     ```bash
-    cd NOME_DO_SEU_REPOSITORIO
+    cd monitorplus
     ```
 
 3.  **Abra o arquivo `index.html`:**
@@ -72,8 +71,6 @@ Uma plataforma web front-end interativa para simular o monitoramento de sistemas
 
 4.  **Conexão com a Internet:**
     * É necessária uma conexão ativa com a internet para que as bibliotecas carregadas via CDN (Bootstrap, Chart.js, SheetJS, Font Awesome) funcionem corretamente.
-
-## Screenshots (Sugestão)
 
 ## Possíveis Melhorias Futuras
 
